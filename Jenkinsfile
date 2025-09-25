@@ -2,31 +2,43 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Building Spring Boot project...'
-                bat 'mvn clean install'
+                script {
+                    // Use the Maven tool configured in Jenkins
+                    def mvnHome = tool name: 'Maven', type: 'maven'
+                    bat "\"${mvnHome}\\bin\\mvn\" clean install"
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                bat 'mvn test'
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'maven'
+                    bat "\"${mvnHome}\\bin\\mvn\" test"
+                }
             }
         }
 
         stage('Package') {
             steps {
-                echo 'Packaging JAR...'
-                bat 'mvn package -DskipTests'
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'maven'
+                    bat "\"${mvnHome}\\bin\\mvn\" package -DskipTests"
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying JAR to jars folder...'
-                bat 'if not exist jars mkdir jars'
+                bat 'mkdir jars || echo Already exists'
                 bat 'copy target\\*.jar jars\\'
             }
         }
