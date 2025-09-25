@@ -22,7 +22,14 @@ pipeline {
             steps {
                 script {
                     def mvnHome = tool name: 'Maven', type: 'maven'
+                    // Run tests
                     bat "\"${mvnHome}\\bin\\mvn\" test"
+                }
+            }
+            post {
+                always {
+                    // Publish JUnit test reports (even if tests fail)
+                    junit '**/target/surefire-reports/*.xml'
                 }
             }
         }
