@@ -23,6 +23,7 @@ public class SampleController {
 
     @PostMapping("/students")
     public void createStudent(@RequestBody Student student) {
+        
         sampleService.addStudent(student);
     }
 }

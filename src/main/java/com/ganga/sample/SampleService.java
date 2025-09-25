@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 public class SampleService {
     private List<Student> students = new ArrayList<>(
         List.of(
-        new Student("Alice", 20),
-        new Student("Bob", 22),
-        new Student("Charlie", 23))
+        new Student(1, "Alice", 20),
+        new Student(2, "Bob", 22),
+        new Student(3, "Charlie", 23))
     );
 
     public List<Student> getStudents() {
@@ -19,6 +19,7 @@ public class SampleService {
     }
 
     public void addStudent(Student student) {
+        student.setId(students.size() + 1);
         students.add(student);
     }
 }
