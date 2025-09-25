@@ -38,8 +38,12 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Create the jars folder inside your project if it doesn't exist
-                bat 'mkdir "C:\\Users\\US shift presales\\Documents\\Jenkins\\sample\\jars" || echo Already exists'
+                // Safely create the jars folder (won’t fail if it already exists)
+                bat '''
+                    if not exist "C:\\Users\\US shift presales\\Documents\\Jenkins\\sample\\jars" (
+                        mkdir "C:\\Users\\US shift presales\\Documents\\Jenkins\\sample\\jars"
+                    )
+                '''
                 
                 // Copy the built JAR(s) from target to the jars folder
                 bat 'copy target\\*.jar "C:\\Users\\US shift presales\\Documents\\Jenkins\\sample\\jars\\"'
